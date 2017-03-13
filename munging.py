@@ -7,11 +7,10 @@ import sys
 import glob
 from PIL import Image
 
-if __name__ == '__main__':
 
-    # Import data
-    train_filepath = sys.argv[1]
-    test_filepath = sys.argv[2]
+def munge(train_filepath, test_filepath):
+
+    # read in the data
     train_df = pd.read_json(train_filepath)
     test_df = pd.read_json(test_filepath)
 
@@ -23,7 +22,7 @@ if __name__ == '__main__':
     train_df["num_features"] = train_df["features"].apply(len)
     test_df["num_features"] = test_df["features"].apply(len)
 
-    # count of words present in description column #
+    # count of words present in description column
     train_df["num_description_words"] = train_df["description"].apply(lambda x: len(x.split(" ")))
     test_df["num_description_words"] = test_df["description"].apply(lambda x: len(x.split(" ")))
 
@@ -98,3 +97,13 @@ if __name__ == '__main__':
     # Save munged data to .json
     train_df.to_json(train_filepath[:-5]+"_munged.json")
     test_df.to_json(test_filepath[:-5]+"_munged.json")
+
+
+
+if __name__ == '__main__':
+    # Import data
+    train_filepath = sys.argv[1]
+    test_filepath = sys.argv[2]
+
+    # Munge data
+    munge(train_filepath, test_filepath)

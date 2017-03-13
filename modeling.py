@@ -23,13 +23,9 @@ from scipy import sparse
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 
 
-if __name__ == '__main__':
-
-    # import munged data
-    train_filepath = sys.argv[1]
-    test_filepath = sys.argv[2]
-    train_df = pd.read_json(train_filepath)
-    test_df = pd.read_json(test_filepath)
+def model(munged_train_filepath, munged_test_filepath, save_predictions_path):
+    train_df = pd.read_json(munged_train_filepath)
+    test_df = pd.read_json(munged_test_filepath)
 
 
     # Need to ask John what this does
@@ -91,4 +87,14 @@ if __name__ == '__main__':
     out_df = pd.DataFrame(preds)
     out_df.columns = ["high", "medium", "low"]
     out_df["listing_id"] = test_df.listing_id.values
-    out_df.to_csv(sys.argv[3], index=False)
+    out_df.to_csv(save_predictions_path, index=False)
+
+
+if __name__ == '__main__':
+    # import munged data
+    munged_train_filepath = sys.argv[1]
+    munged_test_filepath = sys.argv[2]
+    save_predictions_path = sys.argv[3]
+
+    # model munged data
+    model(munged_train_filepath, munged_test_filepath, save_predictions_path)
